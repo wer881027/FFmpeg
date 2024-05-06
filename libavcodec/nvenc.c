@@ -1184,9 +1184,10 @@ static av_cold int nvenc_setup_rate_control(AVCodecContext *avctx)
     if (ctx->nonref_p)
         ctx->encode_config.rcParams.enableNonRefP = 1;
 
-    if (ctx->zerolatency)
+    if (ctx->zerolatency) {
+        ctx->encode_config.encodeCodecConfig.h264Config.h264VUIParameters.bitstreamRestrictionFlag = 1;
         ctx->encode_config.rcParams.zeroReorderDelay = 1;
-
+    }
     if (ctx->quality) {
         //convert from float to fixed point 8.8
         int tmp_quality = (int)(ctx->quality * 256.0f);
